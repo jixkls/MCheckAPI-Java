@@ -1,7 +1,7 @@
 # 🩺 MedCheckAPI  
 API REST para busca e gestão de médicos, especialidades e cidades de atendimento.
 
-Este projeto foi desenvolvido como estudo prático de **Java + Spring Boot**, seguindo boas práticas de arquitetura, versionamento e modelagem de APIs REST.  
+Este projeto foi desenvolvido como estudo prático de **Java + Spring Boot**, é uma remodelagem do MedCheckAPI feito em Node.js. Sendo um projeto adicional, seguindo boas práticas de arquitetura, versionamento e modelagem de APIs REST.  
 O objetivo é permitir que usuários encontrem médicos por nome, cidade ou especialidade, além de permitir gestão completa via endpoints administrativos.
 
 ---
