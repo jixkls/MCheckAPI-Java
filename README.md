@@ -1,6 +1,6 @@
 # 📄 **README.md — MedCheckAPI**
 
-```markdown
+markdown
 # 🩺 MedCheckAPI  
 API REST para busca e gestão de médicos, especialidades e cidades de atendimento.
 
@@ -10,7 +10,7 @@ O objetivo é permitir que usuários encontrem médicos por nome, cidade ou espe
 ---
 
 ## 🚀 Tecnologias Utilizadas
-
+```
 - **Java 21**
 - **Spring Boot 3**
   - Web
@@ -23,7 +23,7 @@ O objetivo é permitir que usuários encontrem médicos por nome, cidade ou espe
 - **Lombok**
 - **Maven**
 - **Swagger (Springdoc)** – *opcional, será adicionado depois*
-
+```
 ---
 
 ## 📦 Arquitetura do Projeto
