@@ -1,6 +1,3 @@
-# 📄 **README.md — MedCheckAPI**
-
-markdown
 # 🩺 MedCheckAPI  
 API REST para busca e gestão de médicos, especialidades e cidades de atendimento.
 
