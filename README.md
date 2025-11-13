@@ -222,16 +222,3 @@ spring.jpa.hibernate.ddl-auto=none
 * [ ] Testes automatizados
 
 ---
-
-## 💬 Contato
-
-Projeto desenvolvido por **Diogo Bettin**, com fins de estudo e evolução profissional em **Spring Boot** e arquitetura de APIs modernas.
-
-```
-
----
-
-Se quiser, posso criar também um **banner ASCII pro topo**, ou colocar **badges do GitHub Shields** (Java version, Spring Boot version, Flyway, Postgres etc).
-
-Quer que eu gere uma versão com badges?
-```
