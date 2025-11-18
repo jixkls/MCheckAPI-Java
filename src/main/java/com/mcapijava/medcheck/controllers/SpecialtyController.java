@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/especialidades")
+@RequestMapping("/api/v1/especialties")
 public class SpecialtyController {
 
     private final SpecialtyRepository sRepo;
