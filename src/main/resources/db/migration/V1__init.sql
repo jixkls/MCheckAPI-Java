@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS doctors (
     name VARCHAR(120) NOT NULL,
     crm VARCHAR(20) NOT NULL UNIQUE,
     city VARCHAR(80) NOT NULL,
-    specialty_id BIGINT NOT NULL,
+    specialty BIGINT NOT NULL,
     phone VARCHAR(30),
     email VARCHAR(120)
 );
