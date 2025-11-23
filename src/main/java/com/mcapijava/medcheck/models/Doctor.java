@@ -26,7 +26,12 @@ public class Doctor {
     @Column(nullable = false, length = 20)
     private String city;
 
-    @ManyToMany
-    @JoinColumn(name = "specialty_id", nullable = false)
-    private Specialty specialty;
+    @Column(nullable = false, length = 80)
+    private String specialty;
+
+    @Column(length = 30)
+    private String phone;
+
+    @Column(length = 120)
+    private String email;
 }

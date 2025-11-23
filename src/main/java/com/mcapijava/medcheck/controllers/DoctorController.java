@@ -1,23 +1,20 @@
 package com.mcapijava.medcheck.controllers;
 
-
+import com.mcapijava.medcheck.dto.DoctorRequest;
 import com.mcapijava.medcheck.dto.DoctorResponse;
 import com.mcapijava.medcheck.models.Doctor;
-import com.mcapijava.medcheck.models.Specialty;
 import com.mcapijava.medcheck.repository.DoctorRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
 @RestController
 @RequestMapping("/api/v1/doctors")
 public class DoctorController {
+
     private final DoctorRepository doctorRepo;
 
     public DoctorController(DoctorRepository doctorRepo) {
@@ -32,26 +29,70 @@ public class DoctorController {
         if (size > 50) size = 50;
 
         var pageable = PageRequest.of(page, size, Sort.by("name").ascending());
-        Page<Doctor> doctors = doctorRepo.findAll(pageable);
-        return doctors.map(this::toResponse);
+        return doctorRepo.findAll(pageable).map(this::toResponse);
     }
 
     @GetMapping("/{id}")
     public DoctorResponse get(@PathVariable UUID id) {
-        var doc = doctorRepo.findById(id).orElseThrow(() -> new RuntimeException("Doutor não encontrado"));
-        return toResponse(doc);
+        var doctor = doctorRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Doutor não encontrado"));
+
+        return toResponse(doctor);
     }
 
-    private DoctorResponse toResponse(Doctor doctor) {
-        var specialtiesNames = doctor.getSpecialties().stream().map(Specialty::getName).toList();
-        var cityNames = doctor.getCities().stream().map(city -> city.getName() + "/" + city.getState()).toList();
+    @PostMapping
+    public DoctorResponse create(@RequestBody DoctorRequest request) {
+        var doctor = new Doctor();
 
+        doctor.setName(request.name());
+        doctor.setCrm(request.crm());
+        doctor.setCity(request.city());
+        doctor.setSpecialty(request.specialty());
+        doctor.setPhone(request.phone());
+        doctor.setEmail(request.email());
+
+        var saved = doctorRepo.save(doctor);
+        return toResponse(saved);
+    }
+
+    @PutMapping("/{id}")
+    public DoctorResponse update(@PathVariable UUID id,
+                                 @RequestBody DoctorRequest request) {
+
+        var doctor = doctorRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Doutor não encontrado"));
+
+        doctor.setName(request.name());
+        doctor.setCrm(request.crm());
+        doctor.setCity(request.city());
+        doctor.setSpecialty(request.specialty());
+        doctor.setPhone(request.phone());
+        doctor.setEmail(request.email());
+
+        var updated = doctorRepo.save(doctor);
+        return toResponse(updated);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable UUID id) {
+        if (!doctorRepo.existsById(id)) {
+            throw new RuntimeException("Doutor não encontrado");
+        }
+        doctorRepo.deleteById(id);
+    }
+
+
+    // Helper: converter Doctor para um DoctorResponse
+
+    private DoctorResponse toResponse(Doctor doctor) {
         return new DoctorResponse(
                 doctor.getId(),
                 doctor.getName(),
                 doctor.getCrm(),
                 doctor.getCity(),
-                doctor.getSpecialty().getName()
+                doctor.getSpecialty(),
+                doctor.getPhone(),
+                doctor.getEmail()
         );
     }
 }
