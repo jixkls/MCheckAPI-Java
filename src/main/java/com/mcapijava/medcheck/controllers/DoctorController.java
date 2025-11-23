@@ -4,6 +4,7 @@ import com.mcapijava.medcheck.dto.DoctorRequest;
 import com.mcapijava.medcheck.dto.DoctorResponse;
 import com.mcapijava.medcheck.models.Doctor;
 import com.mcapijava.medcheck.repository.DoctorRepository;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -41,7 +42,7 @@ public class DoctorController {
     }
 
     @PostMapping
-    public DoctorResponse create(@RequestBody DoctorRequest request) {
+    public DoctorResponse create(@Valid @RequestBody DoctorRequest request) {
         var doctor = new Doctor();
 
         doctor.setName(request.name());
@@ -56,8 +57,7 @@ public class DoctorController {
     }
 
     @PutMapping("/{id}")
-    public DoctorResponse update(@PathVariable UUID id,
-                                 @RequestBody DoctorRequest request) {
+    public DoctorResponse update(@PathVariable UUID id, @Valid @RequestBody DoctorRequest request) {
 
         var doctor = doctorRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Doutor não encontrado"));
