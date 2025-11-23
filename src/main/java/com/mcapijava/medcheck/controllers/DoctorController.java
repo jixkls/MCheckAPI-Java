@@ -50,9 +50,8 @@ public class DoctorController {
                 doctor.getId(),
                 doctor.getName(),
                 doctor.getCrm(),
-                specialtiesNames,
-                cityNames
+                doctor.getCity(),
+                doctor.getSpecialty().getName()
         );
     }
-
 }

@@ -23,15 +23,10 @@ public class Doctor {
     @Column(nullable = false, length = 20)
     private String crm;
 
-    @ManyToMany
-    @JoinTable(name = "doctor_specialties",
-        joinColumns = @JoinColumn(name = "doctor_id"),
-            inverseJoinColumns = @JoinColumn(name = "specialty_id"))
-    private Set<Specialty> specialties = new LinkedHashSet<>(); // Tem que ser Set pra não repetir a especialidade
+    @Column(nullable = false, length = 20)
+    private String city;
 
     @ManyToMany
-    @JoinTable(name = "doctor_cities",
-        joinColumns = @JoinColumn(name = "doctor_id"),
-            inverseJoinColumns = @JoinColumn(name = "city_id"))
-    private Set<City> cities = new LinkedHashSet<>();
+    @JoinColumn(name = "specialty_id", nullable = false)
+    private Specialty specialty;
 }

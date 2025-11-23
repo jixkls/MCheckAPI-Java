@@ -7,6 +7,6 @@ public record DoctorResponse(
         UUID id,
         String name,
         String crm,
-        List<String> specialties,
-        List<String> cities
+        String specialty,
+        String cities
 ) {}
