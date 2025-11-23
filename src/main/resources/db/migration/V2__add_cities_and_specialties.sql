@@ -1,0 +1,12 @@
+
+CREATE TABLE IF NOT EXISTS cities (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(80) NOT NULL,
+    state CHAR(2) NOT NULL,
+    CONSTRAINT uq_city UNIQUE (name, state)
+    );
+
+CREATE TABLE IF NOT EXISTS specialties (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(80) NOT NULL UNIQUE
+);
