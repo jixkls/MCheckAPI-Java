@@ -2,6 +2,7 @@ package com.mcapijava.medcheck.controllers;
 
 import com.mcapijava.medcheck.dto.DoctorRequest;
 import com.mcapijava.medcheck.dto.DoctorResponse;
+import com.mcapijava.medcheck.dto.DoctorUpdateRequest;
 import com.mcapijava.medcheck.models.Doctor;
 import com.mcapijava.medcheck.repository.DoctorRepository;
 import jakarta.validation.Valid;
@@ -57,7 +58,7 @@ public class DoctorController {
     }
 
     @PutMapping("/{id}")
-    public DoctorResponse update(@PathVariable UUID id, @Valid @RequestBody DoctorRequest request) {
+    public DoctorResponse update(@PathVariable UUID id, @Valid @RequestBody DoctorUpdateRequest request) {
 
         var doctor = doctorRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Doutor não encontrado"));
