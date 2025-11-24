@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:17
+    container_name: medcheck-db
+    environment:
+      POSTGRES_DB: medcheck
+      POSTGRES_USER: medcheck
+      POSTGRES_PASSWORD: medcheck
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: medcheck-api
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/medcheck
+      SPRING_DATASOURCE_USERNAME: medcheck
+      SPRING_DATASOURCE_PASSWORD: medcheck
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_PROFILES_ACTIVE: prod
+      # coloca a mesma key que você usa localmente
+      JWT_SECRET: "minha_chave_jwt_bem_secreta"
+    ports:
+      - "8080:8080"
+    # se quiser ver logs em tempo real mais limpos:
+    # command: ["sh", "-c", "java -jar app.jar"]
+
+volumes:
+  db-data:
