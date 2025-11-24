@@ -39,7 +39,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        // liberados sem login
+                        // endpoint publicos
                         .requestMatchers(
                                 "/",
                                 "/swagger-ui/**",
@@ -48,8 +48,13 @@ public class SecurityConfig {
                                 "/api/v1/auth/login"
                         ).permitAll()
 
-                        // GETs liberados (listagem/buscas)
+                        // GETs liberados
                         .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
+
+                        // Só pro Admin
+                        .requestMatchers(HttpMethod.POST, "/api/v1/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/**").hasRole("ADMIN")
 
                         // qualquer outra coisa precisa estar autenticado
                         .anyRequest().authenticated()
