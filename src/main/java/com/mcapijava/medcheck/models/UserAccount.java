@@ -10,12 +10,15 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users") // mesmo nome da tabela no V3_create_users_table.sql
+@Table(name = "users")
 public class UserAccount implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Column(nullable = false)
+    private String name;
 
     @Column(nullable = false, unique = true, length = 120)
     private String email;
@@ -30,7 +33,8 @@ public class UserAccount implements UserDetails {
     public UserAccount() {
     }
 
-    public UserAccount(String email, String password, Role role) {
+    public UserAccount(String name, String email, String password, Role role) {
+        this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -44,12 +48,29 @@ public class UserAccount implements UserDetails {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getName() {
+        return name;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    // ===== UserDetails =====
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // ROLE_ADMIN / ROLE_USER
+        String roleName = "ROLE_" + this.role.name();
+        return List.of(new SimpleGrantedAuthority(roleName));
     }
 
     @Override
@@ -61,26 +82,21 @@ public class UserAccount implements UserDetails {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        // ROLE_ADMIN ou ROLE_USER
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
-    }
-
+    // username = email
     @Override
     public String getUsername() {
-        // vamos usar e-mail como "username"
         return email;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    // Pra simplificar: tudo true (sem bloqueio/expiração de conta)
     @Override
     public boolean isAccountNonExpired() {
         return true;
