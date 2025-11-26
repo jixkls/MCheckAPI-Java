@@ -1,221 +1,142 @@
-# 🩺 MedCheckAPI  
-API REST para busca e gestão de médicos, especialidades e cidades de atendimento.
+🧰 README.md — versão atualizada para MedCheckAPI-Java
+# MedCheckAPI (Java + Spring Boot)
 
-Este projeto foi desenvolvido como estudo prático de **Java + Spring Boot**, é uma remodelagem do MedCheckAPI feito em Node.js. Sendo um projeto adicional, seguindo boas práticas de arquitetura, versionamento e modelagem de APIs REST.  
-O objetivo é permitir que usuários encontrem médicos por nome, cidade ou especialidade, além de permitir gestão completa via endpoints administrativos.
+API REST para gestão e busca de médicos, especialidades e cidades de atendimento — com suporte completo a CRUD, buscas com filtros, paginação e persistência via banco de dados.  
 
----
-
-## 🚀 Tecnologias Utilizadas
-```
-- **Java 21**
-- **Spring Boot 3**
-  - Web
-  - Data JPA
-  - Security
-  - Validation
-- **Flyway** para versionamento de banco
-- **PostgreSQL** (produção)  
-- **H2 Database** (desenvolvimento)
-- **Lombok**
-- **Maven**
-- **Swagger (Springdoc)** – *opcional, será adicionado depois*
-```
----
-
-## 📦 Arquitetura do Projeto
-
-```
-
-src/main/java/com.mcapijava.medcheck
-├── config/              → Configurações (Security, etc.)
-├── controllers/         → Endpoints REST
-├── dto/                 → Objetos de transporte (Request/Response)
-├── models/              → Entidades JPA
-├── repository/          → Interfaces de persistência (JPA)
-└── MedcheckApplication  → Aplicação principal
-
-```
-
-### 📁 Migrations (Flyway)
-
-```
-
-src/main/resources/db/migration
-├── V1__init_schema.sql  → Criação das tabelas
-└── V2__seed_data.sql    → Seed inicial (especialidades e cidades)
-
-```
+Projeto desenvolvido com boas práticas, uso de migrações (Flyway), JPA/Hibernate, camadas separadas e possibilidade de rodar localmente ou via Docker.
 
 ---
 
-## 🧠 Visão Geral da Modelagem
+## ✅ Tecnologias Utilizadas
 
-### 🩺 **Doctor**
-- id (UUID)
-- name
-- crm (único)
-- specialties (ManyToMany)
-- cities (ManyToMany)
-
-### 🏥 **Specialty**
-- id (UUID)
-- name (único)
-
-### 🌆 **City**
-- id (UUID)
-- name
-- state (ex.: "PR")
+- Java 21  
+- Spring Boot 3 (Web, Data JPA, Validation, Security se aplicável)  
+- Flyway (versões / migrações)  
+- Banco de dados: PostgreSQL (produção) / H2 (desenvolvimento)  
+- Maven  
+- (Opcional) Springdoc / Swagger para documentação da API  
 
 ---
 
-## 🔌 Endpoints
+## 📂 Estrutura do Projeto  
 
-### 🏥 **Health**
-| Método | Rota | Descrição |
-|--------|-------|-----------|
-| GET | `/api/v1/health` | Status da API |
 
----
 
-### 🌆 **Cities**
-Endpoints abertos:
+src/
+main/
+java/com/…/medcheck → código fonte (controllers, dto, models, repository etc.)
+resources/
+db/migration → scripts Flyway: schema + seed
+├── pom.xml
+├── .mvn/…
+├── Dockerfile
+├── docker-compose.yml
+└── README.md
 
-| Método | Rota | Descrição |
-|--------|-------|-----------|
-| GET | `/api/v1/cities` | Lista todas as cidades |
-| POST | `/api/v1/cities` | Cadastra uma nova cidade *(admin)* |
-
----
-
-### 🧬 **Specialties**
-Endpoints abertos:
-
-| Método | Rota | Descrição |
-|--------|-------|-----------|
-| GET | `/api/v1/specialties` | Lista todas as especialidades |
-| POST | `/api/v1/specialties` | Cadastra uma nova especialidade *(admin)* |
 
 ---
 
-### 👨‍⚕️ **Doctors**
+## 🚀 Como Rodar Localmente (sem Docker)
 
-#### Endpoints públicos
-| Método | Rota | Descrição |
-|--------|-------|-----------|
-| GET | `/api/v1/doctors` | Lista paginada de médicos |
-| GET | `/api/v1/doctors/{id}` | Detalhes de um médico |
+1. Clone o repositório  
+   ```bash
+   git clone https://github.com/jixkls/MCheckAPI-Java.git
+   cd MCheckAPI-Java
 
-#### Endpoints administrativos
-| Método | Rota | Descrição |
-|--------|-------|-----------|
-| POST | `/api/v1/doctors` | Cadastra médico |
-| PUT | `/api/v1/doctors/{id}` | Atualiza médico |
-| DELETE | `/api/v1/doctors/{id}` | Remove médico |
 
----
+Configure o banco no src/main/resources/application.properties ou application-*.yml
 
-## 🔍 Busca avançada
+Para ambiente de desenvolvimento (H2 – memória): já configurado por padrão
 
-| Método | Rota | Query Params |
-|--------|-------|--------------|
-| GET | `/api/v1/search/doctors` | `name`, `specialty`, `city` |
+Para produção (PostgreSQL): configure URL, usuário, senha
 
-Exemplo:
+Rode a aplicação:
 
-```
-
-GET /api/v1/search/doctors?name=ana&city=apucarana&specialty=cardiologia
-
-````
-
----
-
-## 🧪 Códigos de resposta
-
-| Código | Significado |
-|--------|-------------|
-| 200 | Sucesso |
-| 201 | Criado |
-| 204 | Sem conteúdo |
-| 400 | Requisição inválida |
-| 401 | Não autorizado |
-| 404 | Não encontrado |
-| 422 | Entidade inválida |
-| 500 | Erro interno |
-
----
-
-## 🗂️ Migrations – Estrutura
-
-### **V1 — Schema Inicial**
-Cria:
-- specialties
-- cities
-- doctors
-- doctor_specialties
-- doctor_cities
-- índices
-
-### **V2 — Seed**
-Insere:
-- Especialidades:
-  - Cardiologia
-  - Dermatologia
-  - Pediatria
-  - Clínica Geral
-- Cidades:
-  - São Paulo/SP
-  - Apucarana/PR
-  - Rio de Janeiro/RJ
-
----
-
-## 🧰 Como rodar o projeto
-
-### **1. Clone o repositório**
-```bash
-git clone https://github.com/.../MedCheckAPI.git
-cd MedCheckAPI
-````
-
-### **2. Configure o banco**
-
-No `application.properties`:
-
-#### H2 (dev)
-
-```properties
-spring.datasource.url=jdbc:h2:mem:medcheck
-spring.jpa.hibernate.ddl-auto=none
-spring.jpa.show-sql=true
-```
-
-#### PostgreSQL (prod)
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/medcheck
-spring.datasource.username=medcheck_user
-spring.datasource.password=your_password
-spring.jpa.hibernate.ddl-auto=none
-```
-
-### **3. Rodar a aplicação**
-
-```bash
 ./mvnw spring-boot:run
-```
 
----
 
-## 📚 Próximos passos planejados
+A API está rodando em http://localhost:8080
 
-* [ ] Implementar Swagger/OpenAPI
-* [ ] Implementar POST/PUT/DELETE de Doctor
-* [ ] Implementar validação com Bean Validation
-* [ ] Criar camada de Service
-* [ ] Autenticação com JWT
-* [ ] Perfis DEV/PROD
-* [ ] Testes automatizados
+🐳 Como Rodar via Docker + Docker Compose
 
----
+Se preferir rodar containerizado, siga:
+
+Tenha instalado:
+
+Docker
+
+Docker Compose (separado ou integrado)
+
+Na raiz do projeto, crie ou adapte um docker-compose.yml
+Ex:
+
+version: "3.9"
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: medcheck
+      POSTGRES_USER: medcheck_user
+      POSTGRES_PASSWORD: medcheck_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/medcheck
+      SPRING_DATASOURCE_USERNAME: medcheck_user
+      SPRING_DATASOURCE_PASSWORD: medcheck_pass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+    ports:
+      - "8080:8080"
+
+volumes:
+  db_data:
+
+
+Construir e subir containers:
+
+docker compose up --build
+
+
+A API estará acessível em http://localhost:8080. O banco PostgreSQL estará “por trás” do container db.
+
+📄 Endpoints
+Rota / Método	Descrição
+GET /api/v1/health	Verifica se a API está rodando
+GET /api/v1/cities	Lista todas as cidades
+POST /api/v1/cities	Cria nova cidade (admin)
+GET /api/v1/specialties	Lista todas especialidades
+POST /api/v1/specialties	Cria nova especialidade (admin)
+GET /api/v1/doctors	Lista paginada de médicos
+GET /api/v1/doctors/{id}	Detalhes de médico
+POST /api/v1/doctors	Cria médico (admin)
+PUT /api/v1/doctors/{id}	Atualiza médico (admin)
+DELETE /api/v1/doctors/{id}	Remove médico (admin)
+GET /api/v1/search/doctors	Busca por parâmetros (nome, cidade, especialidade)
+
+(Resposta e códigos HTTP conforme especificado no README antigo)
+
+🎯 Observações e Considerações
+
+O usuário ADMIN não foi colocado em uma variável de ambiente, então, recomendo utilizar esse projeto em testes e com essas credenciais somente em desenvolvimento. Em produção essas
+credenciais devem ser atualizadas e inseridas em variáveis de ambiente
+
+Os scripts de migração estão em src/main/resources/db/migration:
+
+V1__init_schema.sql — cria schema de tabelas
+
+V2__seed_data.sql — insere dados iniciais (especialidades, cidades)
+
+A estrutura modular (controllers, dto, models, repository) facilita manutenção, testes e futuras expansões.
+
+A versão Docker está disponível, sem necessidade de instalação local de dependências externas.
+
+📬 Contribuições / Uso
+
+Sinta-se livre para usar, adaptar ou expandir este código conforme necessidade. Pull-requests e sugestões são bem-vindas.
